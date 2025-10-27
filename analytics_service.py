@@ -1,21 +1,32 @@
 # ~/dynamicpricing/analytics-engine/analytics_service.py
-from flask import Flask, jsonify
-import random
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
-app = Flask(__name__)
+# Sample transaction data
+data = {
+    "Product": ["Product A", "Product B", "Product C", "Product D"],
+    "Transactions": [150, 230, 90, 120],
+    "Revenue": [3000, 4600, 1800, 2400]
+}
 
-@app.route('/')
-def home():
-    return jsonify({"message": "Welcome to Analytics Engine"})
+# Create DataFrame
+df = pd.DataFrame(data)
 
-@app.route('/summary')
-def summary():
-    total_transactions = random.randint(100, 1000)
-    avg_price = round(random.uniform(50, 200), 2)
-    return jsonify({
-        "total_transactions": total_transactions,
-        "average_price": avg_price
-    })
+# Plot number of transactions per product
+plt.figure(figsize=(8, 5))
+plt.bar(df['Product'], df['Transactions'], color='skyblue')
+plt.title("Transactions per Product")
+plt.xlabel("Products")
+plt.ylabel("Number of Transactions")
+plt.savefig("transactions_per_product.png")  # Save the chart
+plt.show()
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002)
+# Plot revenue per product
+plt.figure(figsize=(8, 5))
+plt.bar(df['Product'], df['Revenue'], color='orange')
+plt.title("Revenue per Product")
+plt.xlabel("Products")
+plt.ylabel("Revenue ($)")
+plt.savefig("revenue_per_product.png")
+plt.show()
